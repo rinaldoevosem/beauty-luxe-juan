@@ -12,6 +12,7 @@
   @param {string} [localization] - Captured HTML for language/country selector
   @param {string} [search] - Captured HTML for search input
   @param {string} [drawer_search] - Captured HTML for drawer-based search
+  @param {boolean} [search_input] - Captured HTML for search input
 {% enddoc %}
 
 {%- liquid
@@ -32,6 +33,8 @@
 
     case item
       when 'actions'
+        assign item_column = 'right'
+      when 'search_input'
         assign item_column = 'right'
     endcase
 
@@ -82,6 +85,10 @@
               {{ localization }}
             {% when 'search' %}
               {{ search }}
+            {% when 'search_input' %}
+              {% if search_input %}
+                {% render 'search-input', class: 'input-desktop' %}
+              {% endif %}
             {% when 'drawer_search' %}
               {{ drawer_search }}
             {% when 'actions' %}

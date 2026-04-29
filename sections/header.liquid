@@ -1,10 +1,8 @@
-
-
 {% liquid
-  assign order = 'logo,menu,localization,search,drawer_search,actions'
+  assign order = 'logo,menu,localization,search,search_input,drawer_search,actions'
 
   if shop.customer_accounts_enabled
-    assign order = 'drawer_search,logo,menu,localization,search,actions'
+    assign order = 'drawer_search,logo,menu,localization,search,search_input,actions'
   endif
 
   assign rows = 'top,bottom' | split: ','
@@ -78,23 +76,23 @@
   if section.settings.localization_position == 'left'
     if section.settings.search_position == 'left'
       if shop.customer_accounts_enabled
-        assign order = 'drawer_search,logo,search,localization,menu,actions'
+        assign order = 'drawer_search,logo,search,search_input,localization,menu,actions'
       else
-        assign order = 'logo,search,localization,menu,drawer_search,actions'
+        assign order = 'logo,search,search_input,localization,menu,drawer_search,actions'
       endif
     else
       if shop.customer_accounts_enabled
-        assign order = 'drawer_search,logo,localization,menu,search,actions'
+        assign order = 'drawer_search,logo,localization,menu,search,search_input,actions'
       else
-        assign order = 'logo,localization,menu,search,drawer_search,actions'
+        assign order = 'logo,localization,menu,search,drawer_search,search_input,actions'
       endif
     endif
   else
     if section.settings.search_position == 'left'
       if shop.customer_accounts_enabled
-        assign order = 'drawer_search,logo,search,menu,localization,actions'
+        assign order = 'drawer_search,logo,search,menu,localization,search_input,actions'
       else
-        assign order = 'logo,search,menu,localization,drawer_search,actions'
+        assign order = 'logo,search,menu,localization,drawer_search,search_input,actions'
       endif
     endif
   endif
@@ -188,6 +186,9 @@
   elsif bottom_transparent
     assign transparent_color_scheme_value = 'bottom'
   endif
+
+  #CUSTOM
+  assign search_input = section.settings.search_input | default: false
 %}
 
 {% capture localization_markup %}
@@ -375,7 +376,8 @@
         actions: actions,
         localization: localization_markup,
         search: search,
-        drawer_search: drawer_search
+        drawer_search: drawer_search,
+        search_input: search_input
       %}
     {% endcapture %}
 
@@ -388,7 +390,7 @@
           style="{{ style | strip }}"
         {%- endif -%}
       >
-        <div class="header__columns spacing-style">
+        <div class="header__columns spacing-style spacing-center">
           {{ content }}
         </div>
       </div>
@@ -740,7 +742,8 @@
     --header-template-columns: var(--header-left) var(--header-center) var(--header-right);
 
     /* Mobile layout */
-    --header-mobile-bookend: 44px;
+    /* --header-mobile-bookend: 44px; */
+    --header-mobile-bookend: 20px;
 
     display: grid;
     grid-template-areas: 'left center right';
@@ -776,15 +779,21 @@
     }
 
     @media screen and (max-width: 749px) {
-      --header-template-columns: var(--header-mobile-bookend) var(--header-mobile-bookend) 1fr
-        var(--header-mobile-bookend) var(--header-mobile-bookend);
+      /* --header-template-columns: var(--header-mobile-bookend) var(--header-mobile-bookend) 1fr
+        var(--header-mobile-bookend) var(--header-mobile-bookend); */
 
-      grid-template-areas: 'leftA leftB center rightA rightB';
+      /* grid-template-areas: 'leftA leftB center rightA rightB'; */
       grid-column: span 3;
       column-gap: 0;
       align-items: center;
       padding-block: 0;
-      padding-inline: 0 var(--padding-3xs);
+      /* padding-inline: 0 var(--padding-3xs); */
+
+      /* CUSTOM */
+      --header-template-columns: auto 1fr 26px auto auto;
+      grid-template-areas: 'leftA center leftB rightA rightB';
+      padding-inline: 16px;
+      /* CUSTOM */
 
       .header-logo {
         grid-area: center;
@@ -811,15 +820,22 @@
   /* not ideal but we need to duplicate these styles for when touch comes into play
     We could avoid the duplication using js to set the data-menu-style attribute on small screens instead of using @media queries */
   #header-component[data-menu-style='drawer'] .header__columns {
-    --header-template-columns: var(--header-mobile-bookend) var(--header-mobile-bookend) 1fr
-      var(--header-mobile-bookend) var(--header-mobile-bookend);
+    /* --header-template-columns: var(--header-mobile-bookend) var(--header-mobile-bookend) 1fr
+      var(--header-mobile-bookend) var(--header-mobile-bookend); */
+      
+    /* grid-template-areas: 'leftA leftB center rightA rightB'; */
+  
+    /* CUSTOM */
+    /* --header-template-columns: var(--header-mobile-bookend) 1fr var(--header-mobile-bookend) var(--header-mobile-bookend) var(--header-mobile-bookend); */
+    --header-template-columns: auto 1fr 26px auto auto;
+    grid-template-areas: 'leftA center leftB rightA rightB';
+    /* CUSTOM */
 
-    grid-template-areas: 'leftA leftB center rightA rightB';
     grid-column: span 3;
     column-gap: 0;
     align-items: center;
     padding-block: 0;
-    padding-inline: 0 var(--padding-3xs);
+    padding-inline: 16px;
 
     .header-logo {
       grid-area: center;
@@ -874,9 +890,11 @@
   .header-actions__action {
     --button-color: var(--color-foreground);
     color: var(--button-color);
-    cursor: pointer;
+    cursor: pointer;    
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100%;
 
     &:hover {
       --button-color: var(--color-foreground);
@@ -884,13 +902,17 @@
   }
 
   .header-actions__action:not(.account-button) .svg-wrapper {
-    height: var(--button-size);
-    width: var(--button-size);
+    /* height: var(--button-size);
+    width: var(--button-size); */
+    height: 18px;
+    width: 18px;
   }
 
   .header-actions__action:not(.account-button) svg {
-    width: var(--icon-size-md);
-    height: var(--icon-size-md);
+    /* width: var(--icon-size-md); */
+    /* height: var(--icon-size-md); */
+    height: 18px;
+    width: 18px;
   }
 
   .header:has(#Details-menu-drawer-container[open]) {
@@ -911,9 +933,9 @@
   }
 
   .header--collapse-row-paddings {
-    .header__row--top .header__columns {
-      --padding-block-end: 0px;
-    }
+    /* .header__row--top .header__columns { */
+      /* --padding-block-end: 0px; */
+    /* } */
 
     .header__row--bottom .header__columns {
       --padding-block-start: 0px;
@@ -1251,6 +1273,13 @@
       ],
       "default": "top",
       "visible_if": "{{ section.settings.show_search }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "search_input",
+      "label": "Show search input on desktop",
+      "info": "Only appears in desktop",
+      "default": true
     },
     {
       "type": "header",

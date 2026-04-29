@@ -4213,3 +4213,18 @@ product-recommendations:has([data-has-recommendations='false']) {
     translate: 0px var(--atc-destination, 0px);
   }
 }
+
+/* CUSTOM */
+
+/* HEADER */
+  .header__row:has(.header__columns .header-menu) {
+    padding: 14px 0;
+    background-color: var(--color-dark-100);
+  }
+  .header__row:has(.header-menu) .header__columns {
+    padding: 0;
+  }
+  .header__row:has(.header-menu) .menu-list__link-title {
+    color: var(--color-white-100);
+  }
+/* HEADER */

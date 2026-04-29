@@ -17,10 +17,36 @@
         "announcement_BxgCk9": {
           "type": "_announcement",
           "settings": {
-            "text": "Welcome to our store",
+            "text": "Free Shipping on Orders $50+",
             "link": "",
-            "font": "var(--font-subheading--family)",
-            "font_size": "0.75rem",
+            "font": "var(--font-body--family)",
+            "font_size": "0.875rem",
+            "weight": "",
+            "letter_spacing": "normal",
+            "case": "none"
+          },
+          "blocks": {}
+        },
+        "announcement_B63qFY": {
+          "type": "_announcement",
+          "settings": {
+            "text": "Earn Rewards on Every Purchase",
+            "link": "",
+            "font": "var(--font-body--family)",
+            "font_size": "0.875rem",
+            "weight": "",
+            "letter_spacing": "normal",
+            "case": "none"
+          },
+          "blocks": {}
+        },
+        "announcement_dtGqaL": {
+          "type": "_announcement",
+          "settings": {
+            "text": "Join Upcoming Pro Workshops →",
+            "link": "",
+            "font": "var(--font-body--family)",
+            "font_size": "0.875rem",
             "weight": "",
             "letter_spacing": "normal",
             "case": "none"
@@ -29,16 +55,18 @@
         }
       },
       "block_order": [
-        "announcement_BxgCk9"
+        "announcement_BxgCk9",
+        "announcement_B63qFY",
+        "announcement_dtGqaL"
       ],
       "name": "t:names.announcement_bar",
       "settings": {
         "speed": 5,
         "section_width": "page-width",
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-3",
         "divider_width": 1,
-        "padding-block-start": 15,
-        "padding-block-end": 15
+        "padding-block-start": 13,
+        "padding-block-end": 14
       }
     },
     "header_section": {
@@ -50,9 +78,7 @@
           "settings": {
             "hide_logo_on_home_page": false,
             "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-block-end": 0
           },
           "blocks": {}
         },
@@ -81,14 +107,16 @@
       },
       "settings": {
         "logo_position": "left",
-        "menu_position": "left",
-        "menu_row": "top",
+        "menu_position": "center",
+        "menu_row": "bottom",
+        "customer_account_menu": "customer-account-main-menu",
         "show_search": true,
         "search_position": "right",
         "search_row": "top",
-        "show_country": true,
+        "search_input": true,
+        "show_country": false,
         "country_selector_style": false,
-        "show_language": true,
+        "show_language": false,
         "localization_font": "heading",
         "localization_font_size": "0.875rem",
         "localization_position": "right",
@@ -99,6 +127,10 @@
         "divider_width": 0,
         "divider_size": "page-width",
         "border_width": 0,
+        "actions_display_style": "icon",
+        "actions_font_size": "0.875rem",
+        "actions_font": "body",
+        "actions_text_case": "none",
         "color_scheme_top": "scheme-1",
         "color_scheme_bottom": "",
         "color_scheme_transparent": "scheme-6",

@@ -39,22 +39,11 @@
 {% endcapture %}
 
 {% capture account_icon %}
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="15"
-    height="17"
-    viewBox="0 0 15 17"
-    fill="none"
-    slot="signed-out-avatar"
-    class="account-button__icon"
-  >
-    <path
-      stroke="currentColor"
-      stroke-linejoin="round"
-      stroke-width="var(--icon-stroke-width)"
-      d="M10.375 3.813a3.063 3.063 0 1 1-6.125 0 3.063 3.063 0 0 1 6.125 0ZM7.313 9.5c-3.667 0-6.24 2.691-6.563 6.125h13.125C13.552 12.191 10.979 9.5 7.312 9.5Z"
-    />
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" slot="signed-out-avatar" class="account-button__icon">
+    <path d="M8 7C6.125 7 4.625 5.525 4.625 3.725C4.625 1.925 6.125 0.450001 8 0.450001C9.875 0.450001 11.375 1.925 11.375 3.725C11.375 5.525 9.875 7 8 7ZM8 1.575C6.75 1.575 5.75 2.55 5.75 3.725C5.75 4.9 6.75 5.875 8 5.875C9.25 5.875 10.25 4.9 10.25 3.725C10.25 2.55 9.25 1.575 8 1.575Z" fill="#131604"/>
+    <path d="M12.925 15.575H3.07505C2.57505 15.575 2.17505 15.175 2.17505 14.675V12.425C2.17505 9.975 4.17505 7.975 6.62505 7.975H9.40005C11.85 7.975 13.85 9.975 13.85 12.425V14.675C13.8251 15.15 13.425 15.575 12.925 15.575ZM3.30005 14.45H12.725V12.425C12.725 10.6 11.225 9.1 9.40005 9.1H6.60005C4.77505 9.1 3.27505 10.6 3.27505 12.425V14.45H3.30005Z" fill="#131604"/>
   </svg>
+
 {% endcapture %}
 
 <header-actions
@@ -103,15 +92,21 @@
 
           <span
             slot="signed-out-avatar"
-            class="{% if display_style != 'icon' %}desktop:hidden{% endif %}"
+            class="account-button__wrap-icon {% if display_style != 'icon' %}desktop:hidden{% endif %}"
             aria-hidden="true"
           >
             {{ account_icon }}
+            <span class="icon-txt hidden--mobile">Sign in</span>
           </span>
         {% endif %}
       </shopify-account>
     </div>
   {% endif %}
+
+  <div class="header-actions__wishlist">
+    {{- 'icon-wishlist.svg' | inline_asset_content -}}
+    <span class="icon-txt hidden--mobile">Wishlist</span>
+  </div>
 
   {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
     <script
@@ -162,7 +157,7 @@
         {{ empty_cart_drawer_content }}
       </template>
       <button
-        class="header-actions__action button-unstyled{% if display_style == 'text' %} header-actions__text-style{% endif %}"
+        class="cart-drawer__trigger header-actions__action button-unstyled{% if display_style == 'text' %} header-actions__text-style{% endif %}"
         on:click="/open"
         aria-haspopup="dialog"
         aria-label="{{ 'accessibility.cart' | t }}"
@@ -170,6 +165,7 @@
         data-testid="cart-drawer-trigger"
       >
         {{ cart_icon }}
+        <span class="icon-txt hidden--mobile">Bag</span>
       </button>
 
       <dialog
@@ -330,7 +326,7 @@
     --cart-drawer-padding-desktop: var(--padding-xl) var(--padding-2xl);
 
     @media screen and (min-width: 750px) {
-      margin-inline-end: calc(var(--gap-xs) * -1);
+      /* margin-inline-end: calc(var(--gap-xs) * -1); */
     }
   }
 
@@ -538,6 +534,7 @@
 
   header-actions {
     display: flex;
+    gap: 10px;
 
     @media screen and (max-width: 749px) {
       justify-self: flex-end;
@@ -561,9 +558,9 @@
     justify-self: flex-end;
   }
 
-  .header__column--right header-actions {
+  /* .header__column--right header-actions {
     margin-inline-start: calc(var(--gap-md) * -1);
-  }
+  } */
 
   .header-actions__cart-icon {
     --cart-bubble-size: 20px;
@@ -710,4 +707,35 @@
       margin-inline-start: 0;
     }
   }
+
+  /* CUSTOM */
+  header-actions {
+    @media screen and (min-width: 750px) {
+      gap: 20px;
+      flex: none;
+    }
+  }
+
+  .account-button {
+    height: 18px;
+    width: fit-content;
+    @media screen and (max-width: 749px) {
+      width: 18px;
+    }
+  }
+  .account-button__wrap-icon svg {
+    height: 18px;
+    width: 18px;
+  }
+
+  .cart-drawer__trigger, .account-button__wrap-icon,
+  .header-actions__wishlist {
+    display: flex;
+    gap: 8px;
+  }
+  .icon-txt {
+    font-size: 13px;
+    color: var(--color-dark-60);
+  }
+  /* CUSTOM */
 {% endstylesheet %}
