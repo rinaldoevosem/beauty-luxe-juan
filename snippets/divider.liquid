@@ -20,6 +20,7 @@
   style="
     --divider-justify-content: {{ settings.alignment_horizontal | default: 'center' }};
     {% render 'spacing-style', settings: settings %}
+    {% if settings.use_columns_width %}--columns-width: {{ settings.columns_width | plus: 1 }};{% endif %}
   "
   {% if attributes %}
     {{- block.shopify_attributes -}}
@@ -33,6 +34,9 @@
         --divider-border-rounded: {% if settings.corner_radius == 'rounded' %}1{% else %}0{% endif %};
       {% endunless %}
       --divider-flex-basis: {{ settings.width_percent }}%;
+      {% if settings.use_only_bb %}
+        --border-right: none;
+      {% endif %}      
     "
   ></span>
 </div>

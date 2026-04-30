@@ -45,6 +45,25 @@
       "default": 100
     },
     {
+      "type": "checkbox",
+      "id": "use_only_bb",
+      "label": "Use only border-bottom (instead of border-bottom and border-right)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "use_columns_width",
+      "label": "Use custom columns width setting (for block inside of a grid)",
+      "default": false
+    },
+    {
+      "type": "number",
+      "id": "columns_width",
+      "label": "Columns width",
+      "default": 0,
+      "visible_if": "{{ block.settings.use_columns_width }}"
+    },
+    {
       "type": "header",
       "content": "t:content.padding"
     },

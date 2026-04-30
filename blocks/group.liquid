@@ -194,6 +194,20 @@
       "visible_if": "{{ block.settings.width == 'custom' }}"
     },
     {
+      "type": "checkbox",
+      "id": "use_columns_width",
+      "label": "Use custom columns width setting (for block inside of a grid)",
+      "default": false,
+      "visible_if": "{{ block.settings.width == 'custom' }}"
+    },
+    {
+      "type": "number",
+      "id": "columns_width",
+      "label": "Columns width",
+      "default": 0,
+      "visible_if": "{{ block.settings.use_columns_width }}"
+    },
+    {
       "type": "select",
       "id": "width_mobile",
       "label": "t:settings.width_mobile",

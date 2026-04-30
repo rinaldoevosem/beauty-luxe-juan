@@ -4228,3 +4228,27 @@ product-recommendations:has([data-has-recommendations='false']) {
     color: var(--color-white-100);
   }
 /* HEADER */
+/* BLOCK - GROUP */
+@media screen and (max-width: 749px) {
+  .layout-panel-flex--row > .group-block--width-fill.group-block--mobile-width-custom {
+    flex: auto;
+  }
+}
+@media screen and (min-width: 750px) {
+  .group-block {
+    grid-column: 1 / var(--columns-width);
+  } 
+}
+/* BLOCK - GROUP */
+/* BLOCK - DIVDER */
+.divider .divider__line {
+  border-right: var(--border-right);
+}
+@media screen and (min-width: 750px) {
+  .divider {
+    grid-column: 1 / var(--columns-width);
+  }
+}
+/* BLOCK - DIVDER */
+
+/* CUSTOM */

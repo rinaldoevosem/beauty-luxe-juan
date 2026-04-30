@@ -16,6 +16,7 @@
     group-block
     group-block--height-{{ settings.height }}
     group-block--width-{{ settings.width }}
+    group-block--mobile-width-{{ settings.width_mobile }}
     border-style
     spacing-style
     size-style
@@ -27,6 +28,7 @@
     {% render 'spacing-style', settings: settings %}
     {% render 'size-style', settings: settings %}
     {{ style }}
+    {% if settings.use_columns_width %}--columns-width: {{ settings.columns_width | plus: 1 }};{% endif %}
   "
   {{ shopify_attributes }}
   data-testid="group-block"
