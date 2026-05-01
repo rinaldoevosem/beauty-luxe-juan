@@ -1,11 +1,12 @@
-
-
 {% liquid
   assign block_settings = block.settings
   assign product = closest.product
-  assign rating = product.metafields.reviews.rating.value.rating
-  assign scale_max = product.metafields.reviews.rating.value.scale_max
-  assign rating_count = product.metafields.reviews.rating_count
+  #assign rating = product.metafields.reviews.rating.value.rating
+  assign rating = 5.0
+  #assign scale_max = product.metafields.reviews.rating.value.scale_max
+  assign scale_max = 5
+  #assign rating_count = product.metafields.reviews.rating_count
+  assign rating_count = 1699
 
   if request.visual_preview_mode and product == blank
     assign product = collections.all.products.first
@@ -33,18 +34,8 @@
     assign svg_filled_stars = rating | floor | plus: decimal_rounded
   %}
 
-  <div
-    class="rating-wrapper rating-color--{{ block_settings.rating_color }} justify-{{ block_settings.alignment }} size-style"
-    style="{% render 'size-style', settings: block_settings %}"
-    {{ block.shopify_attributes }}
-  >
-    <svg
-      class="visually-hidden"
-      style="width: 0; height: 0;"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 32 32"
-      role="presentation"
-    >
+  <div class="rating-wrapper rating-color--{{ block_settings.rating_color }} justify-{{ block_settings.alignment }} size-style" style="{% render 'size-style', settings: block_settings %}" {{ block.shopify_attributes }}>
+    <svg class="visually-hidden" style="width: 0; height: 0;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="presentation">
       <defs>
         <linearGradient id="half" x1="0" x2="100%" y1="0" y2="0">
           <stop offset="50%" stop-color="var(--star-fill-color)"></stop>
@@ -56,11 +47,7 @@
         </symbol>
       </defs>
     </svg>
-    <div
-      class="rating"
-      style="--star-size: calc(var(--font-{{ block_settings.type_preset }}--size) * 1.1);"
-      aria-label="{{ 'accessibility.rating' | t: rating: rating }}"
-    >
+    <div class="rating" style="--star-size: calc(var(--font-{{ block_settings.type_preset }}--size) * 1.1);" aria-label="{{ 'accessibility.rating' | t: rating: rating }}">
       {% if block_settings.stars_style == 'single' %}
         <svg
           class="stars {% if svg_filled_stars > 0 %}filled-star{% endif %}"
@@ -96,11 +83,18 @@
           <span class="rating-count-separator">|</span>
         {%- endif -%}
         {%- if block_settings.show_number -%}
-          {{- rating_count }}
-          {{ 'content.reviews' | t }}
+          {{- rating }} ({{- rating_count }})
         {%- endif -%}
       </p>
     {%- endif -%}
+
+    {% if block_settings.badge_text != blank %}
+      <span class="rating-wrapper__badge color-{{ block_settings.review_badge_color }}" style="--review-badge-border-radius: {{ block_settings.review__badge_corner_radius }}px;">
+        {{ block_settings.badge_text }}
+      </span>
+    {% endif %}
+
+
   </div>
 {%- endif -%}
 
@@ -157,6 +151,14 @@
   .filled-star {
     fill: var(--star-fill-color);
   }
+
+  /* CUSTOM */
+  .rating-wrapper__badge {
+    display: block;
+    padding: 4px 10px;
+    border-radius: var(--review-badge-border-radius);
+  }
+  /* CUSTOM */
 {% endstylesheet %}
 
 {% schema %}
@@ -276,6 +278,31 @@
       "label": "t:settings.alignment",
       "default": "left",
       "visible_if": "{{ block.settings.width != 'fit-content' }}"
+    },
+    {
+      "type": "header",
+      "content": "Badge"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Industry Bestseller"
+    },
+    {
+      "type": "color_scheme",
+      "id": "review_badge_color",
+      "label": "Badge color"
+    },
+    {
+      "type": "range",
+      "id": "review__badge_corner_radius",
+      "label": "Badge corner radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 4
     }
   ],
   "presets": [

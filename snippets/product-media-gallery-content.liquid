@@ -18,6 +18,12 @@
     block_shopify_attributes: block.shopify_attributes,
   %}
 {% enddoc %}
+
+{% comment %} 
+slideshow_mobile_controls_style 
+icons_style
+{% endcomment %}
+
 {%- if block_settings.zoom -%}
   <script
     src="{{ 'zoom-dialog.js' | asset_url }}"
@@ -67,19 +73,34 @@
     assign slideshow_controls_style = 'counter'
   endif
 
-  assign render_slideshow_arrows = false
+  #ver aqui
+  assign render_slideshow_arrows = true 
 
   if selected_product.media.size <= 1
     assign slideshow_class = 'product-media-gallery__slideshow--single-media slideshow--single-media'
-  else
-    assign slideshow_class = ''
 
     if media_presentation == 'carousel'
       assign render_slideshow_arrows = true
     endif
+
+  else
+    assign slideshow_class = ''
+
+    #if media_presentation == 'carousel'
+      #assign render_slideshow_arrows = true
+    #endif
   endif
 
-  if slideshow_controls_style == 'thumbnails'
+  assign use_mobile_hint = false
+  assign use_mobile_arrows = false
+  if block_settings.slideshow_mobile_controls_style == 'hint_dots_arrows'
+    assign use_mobile_hint = true
+    assign use_mobile_arrows = true
+    assign render_mobile_slideshow_controls = true
+  endif
+
+
+  if slideshow_controls_style == 'thumbnails' or slideshow_controls_style == 'thumbnails_arrows_counter'
     assign pagination_position = block_settings.thumbnail_position
   else
     assign pagination_position = 'center'
@@ -343,7 +364,7 @@
         {% if block_settings.media_columns == "two" and block_settings.large_first_image%}media-gallery--large-first-image{% endif %}
       {% endif %}
       media-gallery--{{ media_presentation }}
-      {% if block_settings.slideshow_mobile_controls_style == 'hint' %}
+      {% if block_settings.slideshow_mobile_controls_style == 'hint' or use_mobile_hint %}
         media-gallery--hint
       {% endif %}
       {% if block_settings.extend_media %}
@@ -401,16 +422,39 @@
     {% if sorted_media.size > 1 %}
       {% capture controls %}
         {% if render_slideshow_controls %}
-          {%- render 'slideshow-controls',
-            class: slideshow_controls_class,
-            style: slideshow_controls_style,
-            item_count: sorted_media.size,
-            thumbnails: sorted_media,
-            controls_on_media: controls_on_media,
-            pagination_position: pagination_position,
-            aspect_ratio: block_settings.aspect_ratio,
-            thumbnail_radius: block_settings.thumbnail_radius
-          -%}
+          {% if slideshow_controls_style == 'thumbnails_arrows_counter' %}
+            {% assign custom_thumnails_class = slideshow_controls_class | append: ' slideshow-controls--custom-thumbnails' %}
+            {% assign custom_counter_class = slideshow_controls_class | append: ' slideshow-controls--custom-counter' %}
+
+            {%- render 'slideshow-controls',
+              class: custom_thumnails_class,
+              style: 'thumbnails',
+              item_count: sorted_media.size,
+              thumbnails: sorted_media,
+              controls_on_media: controls_on_media,
+              pagination_position: pagination_position,
+              aspect_ratio: block_settings.aspect_ratio,
+              thumbnail_radius: block_settings.thumbnail_radius
+            -%}
+            {%- render 'slideshow-controls',
+              class: custom_counter_class,
+              style: 'counter',
+              pagination_position: 'right',
+              item_count: sorted_media.size
+            -%}
+          {% else %}
+            {%- render 'slideshow-controls',
+              class: slideshow_controls_class,
+              style: slideshow_controls_style,
+              item_count: sorted_media.size,
+              thumbnails: sorted_media,
+              controls_on_media: controls_on_media,
+              pagination_position: pagination_position,
+              aspect_ratio: block_settings.aspect_ratio,
+              thumbnail_radius: block_settings.thumbnail_radius
+            -%}              
+          {% endif %}
+
         {% endif %}
 
         {% if render_mobile_slideshow_controls %}
@@ -430,7 +474,10 @@
 
     {% if render_slideshow_arrows %}
       {% capture slideshow_arrows %}
-        {% render 'slideshow-arrows', class: 'mobile:hidden', icon_style: block_settings.icons_style %}
+        {% render 'slideshow-arrows', class: '', single_class: 'slideshow-control-nav', icon_style: block_settings.icons_style %}
+        {% comment %} {% if use_mobile_arrows %}
+          {% render 'slideshow-arrows', class: 'mobile:hidden', single_class: 'slideshow-control-nav', icon_style: block_settings.icons_style %}
+        {% endif %} {% endcomment %}
       {% endcapture %}
     {% endif %}
 

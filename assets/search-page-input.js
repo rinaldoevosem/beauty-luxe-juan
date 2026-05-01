@@ -28,7 +28,7 @@ class SearchPageInputComponent extends Component {
   #submitEmptySearch() {
     const searchInput = this.refs.searchPageInput;
 
-    searchInput.focus();
+    // searchInput.focus();
     searchInput.value = '';
 
     if (this.#isEmptyState()) return;

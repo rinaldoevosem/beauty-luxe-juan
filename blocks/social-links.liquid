@@ -1,11 +1,9 @@
-
-
 <div
   class="social-icons__wrapper"
   {{ block.shopify_attributes }}
 >
   {% liquid
-    assign social_links = 'facebook_url,instagram_url,youtube_url,tiktok_url,twitter_url,threads_url,linkedin_url,bluesky_url,snapchat_url,pinterest_url,tumblr_url,vimeo_url,custom_url' | split: ','
+    assign social_links = 'facebook_url,twitter_url,instagram_url,youtube_url,tiktok_url,threads_url,linkedin_url,bluesky_url,snapchat_url,pinterest_url,tumblr_url,vimeo_url,custom_url' | split: ','
   %}
 
   {% for link_key in social_links %}
@@ -66,43 +64,34 @@
       endif
     %}
 
-    {% comment %}
-      Only render the social icon if:
-      1. In editor mode (always show, but may be disabled)
-      2. On storefront AND has a valid profile link
-    {% endcomment %}
     {% if link_url != blank %}
-      {% if request.design_mode or has_profile %}
-        <div
-          class="social-icons__icon-wrapper{% unless has_profile %} social-icons__icon-wrapper--disabled{% endunless %}"
-        >
-          <a
-            href="{{ link_url }}"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="{{ platform | capitalize }}"
-            {% unless has_profile %}
-              {% if request.design_mode %}
-                onclick="return false;"
-                aria-disabled="true"
-              {% endif %}
-            {% endunless %}
-          >
-            <span class="social-icons__icon-label">{{ platform | capitalize }}</span>
-            {% if render_icon %}
-              <svg
-                class="social-icons__icon icon-default"
-                aria-hidden="true"
-                focusable="false"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                {%- render 'icon', icon: platform -%}
-              </svg>
+      <div class="social-icons__icon-wrapper{% unless has_profile %} social-icons__icon-wrapper--disabled{% endunless %}">
+        <a
+          href="{{ link_url }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="{{ platform | capitalize }}"
+          {% unless has_profile %}
+            {% if request.design_mode %}
+              onclick="return false;"
+              aria-disabled="true"
             {% endif %}
-          </a>
-        </div>
-      {% endif %}
+          {% endunless %}
+        >
+          <span class="social-icons__icon-label">{{ platform | capitalize }}</span>
+          {% if render_icon %}
+            <svg
+              class="social-icons__icon icon-default"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              {%- render 'icon', icon: platform -%}
+            </svg>
+          {% endif %}
+        </a>
+      </div>
     {% endif %}
   {% endfor %}
 </div>
@@ -159,6 +148,15 @@
   .shopify-design-mode .social-icons__icon-wrapper--disabled a {
     pointer-events: none;
   }
+
+  /* CUSTOM */
+  .social-icons__icon-wrapper {
+    box-sizing: content-box;
+    padding: 11px;
+    border-radius: 50%;
+    border: 1px solid var(--color-foreground);
+  } 
+  /* CUSTOM */
 {% endstylesheet %}
 
 {% schema %}

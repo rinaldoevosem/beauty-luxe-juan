@@ -1,10 +1,10 @@
-
-
 {%- assign block_settings = block.settings -%}
 <div
   id="ProductInformation-{{ section.id }}"
   class="
+    hidden--desktop
     product-details
+    product-details--mobile
     {% if block_settings.sticky_details_desktop %} sticky-content--desktop{% endif %}
     {% if block_settings.height == 'fill' -%} full-height--desktop{% endif -%}
   "
@@ -30,44 +30,14 @@
 </div>
 
 {% stylesheet %}
-  /* Clear padding on mobile, if not full-width */
-  @media screen and (max-width: 749px) {
-    .product-information.section--page-width .product-details > .group-block {
-      padding-inline: 0;
-    }
-  }
-
-  .view-product-title {
-    display: none;
-  }
-
-  /* Container styles */
-  .product-details {
-    display: flex;
-    align-self: start;
-    justify-content: center;
-  }
-
-  @media screen and (min-width: 750px) {
-    .product-details > .group-block {
-      height: min-content;
-    }
-
-    .full-height--desktop {
-      height: 100%;
-      max-height: calc(100vh - var(--header-group-height, 0));
-      min-height: fit-content;
-    }
-
-    .full-height--desktop .group-block {
-      align-self: var(--details-position, 'flex-start');
-    }
-  }
+   .product-details--mobile {
+    grid-row: 1;
+   }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:names.details",
+  "name": "Details - Mobile",
   "blocks": [
     {
       "type": "@theme"
@@ -135,6 +105,10 @@
   ],
   "tag": null,
   "settings": [
+    {
+      "type": "paragraph",
+      "content": "This block will only be visible on mobile devices. Use it to customize the product details shown on mobile, independently from the details shown on desktop."
+    },
     {
       "type": "header",
       "content": "t:content.size"

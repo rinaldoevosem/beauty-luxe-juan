@@ -4,6 +4,7 @@
   When icon shape is 'none', component uses mixed-blend-mode to ensure visibility.
 
   @param {string} [class] - The class name to apply to the slideshow-arrows component
+  @param {string} [single_class] - The single class name to apply to the slideshow-arrows component
   @param {string} [icon_style] - The style of the icon, defaults to 'arrow'
   @param {string} [icon_shape] - The shape of the icon background (none, circle, square), defaults to 'none'
   @param {string} [arrows_position] - { 'left' | 'center' | 'right' } The position of the arrows, defaults to 'center'
@@ -24,8 +25,8 @@
     class="{{ class }}"
   {% endif %}
 >
-  {%- render 'slideshow-arrow', action: 'previous', icon_style: icon_style, icon_shape: icon_shape -%}
-  {%- render 'slideshow-arrow', action: 'next', icon_style: icon_style, icon_shape: icon_shape -%}
+  {%- render 'slideshow-arrow', class: single_class, action: 'previous', icon_style: icon_style, icon_shape: icon_shape -%}
+  {%- render 'slideshow-arrow', class: single_class, action: 'next', icon_style: icon_style, icon_shape: icon_shape -%}
 </slideshow-arrows>
 
 {% stylesheet %}
@@ -38,7 +39,7 @@
     display: flex;
     z-index: var(--layer-heightened);
     pointer-events: none;
-    mix-blend-mode: difference;
+    /* mix-blend-mode: difference; */
     align-items: flex-end;
 
     &[position='left'] {
@@ -55,6 +56,7 @@
       justify-content: space-between;
       align-items: center;
     }
+
   }
 
   slideshow-arrows:has(.slideshow-control--shape-square),
@@ -78,4 +80,14 @@
   slideshow-arrows .slideshow-control.slideshow-control--style-none {
     display: none;
   }
+
+  /* CUSTOM */ 
+  @media screen and (min-width: 750px) {
+    .product-information__grid slideshow-arrows  {
+      width: 95%;
+      left: calc(100% - 50%);
+      transform: translateX(-50%);
+    }    
+  }
+  /* CUSTOM */
 {% endstylesheet %}

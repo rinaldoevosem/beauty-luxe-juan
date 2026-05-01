@@ -19,7 +19,7 @@
           "settings": {
             "text": "Free Shipping on Orders $50+",
             "link": "",
-            "font": "var(--font-body--family)",
+            "font": "var(--font-heading--family)",
             "font_size": "0.875rem",
             "weight": "",
             "letter_spacing": "normal",

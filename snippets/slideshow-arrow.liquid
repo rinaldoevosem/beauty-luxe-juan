@@ -1,6 +1,7 @@
 {%- doc -%}
   Renders a slideshow arrow control
 
+  @param {string} [class] - Custom additional classes.
   @param {string} action - { 'previous' | 'next' } The action to perform when the arrow is clicked.
   @param {string} [icon_style] - { 'arrow' | 'chevron' } The style of the icon, defaults to 'arrow'.
   @param {string} [icon_shape] - { 'none' | 'circle' | 'square' } The shape of the icon background, defaults to 'none'.
@@ -12,7 +13,8 @@
 
 {%- liquid
   assign icon_name = 'arrow'
-  assign style = icon_style | default: 'arrow'
+  #assign style = icon_style | default: 'arrow'
+  assign style = 'arrow'
   assign shape = icon_shape | default: 'none'
 
   if icon_style contains 'chevron'
@@ -25,7 +27,8 @@
 -%}
 
 <button
-  class="
+  class="    
+    {{ class }}
     slideshow-control slideshow-control--{{ action }}
     {% if icon_size %} slideshow-control--{{ icon_size }}{% endif %}
     {% if shape != 'none' %} slideshow-control--shape-{{ shape }}{% endif %}
@@ -33,6 +36,7 @@
     button button-unstyled button-unstyled--transparent
     {% if action == 'previous' %} flip-x{% endif %}
   "
+
   {% # theme-check-disable %}
   aria-label="{{ 'accessibility.slideshow_' | append: action | t }}"
   {% # theme-check-enable %}
@@ -87,4 +91,24 @@
   .slideshow-control .icon-caret {
     rotate: -90deg;
   }
+
+  /* CUSTOM */
+  button.slideshow-control.slideshow-control-nav {
+    display: grid;
+    place-content: center;
+    place-items: center;
+    width: 40px;
+    min-width: auto;
+    height: 40px;
+    min-height: auto;
+    padding: 0;
+    padding-inline: 0;
+    border-radius: 50%;
+    box-shadow: 0px 5px 10px 1px #00000045;
+    background-color: var(--color-white-100);
+  }
+  .slideshow-control-nav .svg-wrapper {
+    color: var(--color-dark-100);
+  }
+  /* CUSTOM */
 {% endstylesheet %}

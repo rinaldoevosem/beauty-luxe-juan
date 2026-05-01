@@ -21,6 +21,8 @@
     spacing-style
     size-style
     {% if settings.inherit_color_scheme == false %} color-{{ settings.color_scheme }}{% endif %}
+    {% if settings.mobile-hidden %} hidden--mobile{% endif %}
+    {% if settings.desktop-hidden %} hidden--desktop{% endif %}
     {{ class }}
   "
   style="
